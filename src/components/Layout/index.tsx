@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactLenis } from "@lenis";
+import { ReactLenis } from "@studio-freight/react-lenis";
 import { useState } from "react";
 import { Footer, Header, Preloader } from "..";
 import StyledComponentsRegistry from "../../../libs/registry";
