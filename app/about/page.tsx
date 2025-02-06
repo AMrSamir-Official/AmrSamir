@@ -42,18 +42,35 @@ const About = () => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    // إضافة النوع 'any' كحل مؤقت
+    const lenis: any = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.5 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // تهيئة ScrollTrigger
+    gsap.context(() => {
       gsap.fromTo(
         sectionRef.current,
         { opacity: 0, y: 50 },
         { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
       );
     });
-    return () => ctx.revert();
+
+    return () => {
+      lenis.destroy(); // تنظيف Lenis عند التفكيك
+    };
   }, []);
 
   return (
-    <Lenis root>
+    <div>
       <Section ref={sectionRef}>
         <Title
           initial={{ opacity: 0, y: -50 }}
@@ -71,7 +88,7 @@ const About = () => {
           التركيز على السرعة، الأداء، وتجربة المستخدم.
         </Subtitle>
       </Section>
-    </Lenis>
+    </div>
   );
 };
 
