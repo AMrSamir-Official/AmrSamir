@@ -1,9 +1,8 @@
 "use client";
-import Image from "next/image";
-import ic_import from "../../../../public/svgs/ic_import.svg";
-
 import { gsap } from "gsap";
+import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import ic_import from "../../../../public/svgs/ic_import.svg";
 import { Inner, SecondOverlay, Wrapper } from "./styles";
 
 const Preloader = ({
@@ -13,10 +12,10 @@ const Preloader = ({
 }) => {
   const word = ["A", "m", "r"];
 
-  const spans = useRef<any>([]); // Create a ref to store the span elements
-  const imageRef = useRef(null);
-  const secondOverlayRef = useRef(null);
-  const wrapperRef = useRef(null);
+  const spans = useRef<(HTMLDivElement | null)[]>([]); // ref لجميع العناصر
+  const imageRef = useRef<HTMLImageElement>(null); // ref للصورة
+  const secondOverlayRef = useRef<HTMLDivElement>(null); // ref للـ SecondOverlay
+  const wrapperRef = useRef<HTMLDivElement>(null); // ref للـ Wrapper
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -67,7 +66,9 @@ const Preloader = ({
             {word.map((t, i) => (
               <div
                 key={i}
-                ref={(element) => (spans.current[i] = element)} // Assign ref to each span
+                ref={(element) => {
+                  spans.current[i] = element; // تعيين الـ ref لكل عنصر
+                }}
               >
                 {t}
               </div>
