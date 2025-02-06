@@ -1,4 +1,6 @@
-import Lenis from "@studio-freight/react-lenis";
+// import Lenis from "@studio-freight/react-lenis";
+import Lenis from "lenis"; // تأكد من الاستيراد الصحيح
+
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
