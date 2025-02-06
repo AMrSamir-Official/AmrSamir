@@ -45,10 +45,11 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
+      const formElement = e.target as HTMLFormElement; // Explicitly cast the target to HTMLFormElement
       await emailjs.sendForm(
         "service_a5s8ucp",
         "template_44eg4bn",
-        e.target,
+        formElement, // Use the formElement here
         "c0zAOLrM8fTAslsFs"
       );
 

@@ -1,5 +1,4 @@
 "use client";
-
 import { IntroSection } from "@/components";
 import CardItem from "@/components/CardItem"; // Import the CardItem component
 import { useRef, useState } from "react";
@@ -93,10 +92,11 @@ const NavigationArrow = styled.button`
   }
 `;
 
-// Services Page Component
 export default function ServicesPage() {
   const [models] = useState(tabContent);
-  const containerRefs = useRef({});
+
+  // Using useRef directly for containerRefs
+  const containerRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const scroll = (category: string, direction: string) => {
     const container = containerRefs.current[category];
@@ -123,7 +123,6 @@ export default function ServicesPage() {
   return (
     <PageContainer>
       <IntroSection />
-
       <h1 className="text-5xl center text-center m-2.5 w-full">Services</h1>
       {categories.map((category) => {
         // Check if the category has any models (projects)
@@ -133,7 +132,9 @@ export default function ServicesPage() {
           <CategoryContainer key={category}>
             <CategoryTitle>{category}</CategoryTitle>
             <ModelsContainer
-              ref={(el) => (containerRefs.current[category] = el)}
+              ref={(el) => {
+                containerRefs.current[category] = el;
+              }} // Fix: no need to return the element, just assign it
             >
               {models[category]?.map((model, index) => (
                 <CardItem

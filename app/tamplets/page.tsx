@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 import tabContent from "../../constants/Projects";
+
 // التصنيفات
 const categories = [
   "SaaS",
@@ -47,7 +48,7 @@ const TabList = styled.div`
   }
 `;
 
-const Tab = styled(motion.div)`
+const Tab = styled(motion.div)<{ "data-is-active"?: boolean }>`
   padding: 12px 16px;
   margin: 4px 0;
   cursor: pointer;
