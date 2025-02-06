@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import Lenis from "lenis";
+
 import { useState } from "react";
 
 const HomePage = () => {
@@ -9,7 +11,7 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <Lenis>
       <div className="hamburger-menu">
         <button
           className="burger"
@@ -72,7 +74,7 @@ const HomePage = () => {
           </div>
         </div>
       </main>
-    </div>
+    </Lenis>
   );
 };
 
