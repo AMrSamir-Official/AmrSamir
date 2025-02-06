@@ -1,63 +1,19 @@
-"use client";
-
 import Lenis from "@studio-freight/react-lenis";
 import { motion } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
 
-// التسجيل في gsap
-gsap.registerPlugin(ScrollTrigger);
+const HomePage = () => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-// تعريف Lenis بأنواع يدوية لتجنب الأخطاء
-interface LenisOptions {
-  duration: number;
-  easing: (t: number) => number;
-}
-
-interface LenisInstance {
-  raf: (time: number) => void;
-  destroy: () => void;
-}
-
-const Section = styled.section`
-  min-height: 100vh;
-  background-color: #0a0a0a;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 4rem 2rem;
-  overflow: hidden;
-`;
-
-const Title = styled(motion.h1)`
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  background: linear-gradient(90deg, #ff8a00, #e52e71);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const Subtitle = styled(motion.p)`
-  font-size: 1.5rem;
-  max-width: 800px;
-  line-height: 1.6;
-  opacity: 0.8;
-`;
-
-const About = () => {
-  const sectionRef = useRef(null);
+  const toggleMenu = () => {
+    setMenuOpen(!isMenuOpen);
+  };
 
   useEffect(() => {
-    // محاكاة استخدام Lenis مع الأنواع التي تحتوي على مشاكل قد تواجهها
-    const lenis: any = new Lenis({
+    const lenis = new Lenis({
+      // خيارات تخص Lenis (إذا لزم الأمر)
       duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.5 - Math.pow(2, -10 * t)), // تصحيح نوع t
+      easing: (t) => Math.min(1, 1.5 - Math.pow(2, -10 * t)),
     });
 
     function raf(time: number) {
@@ -67,41 +23,77 @@ const About = () => {
 
     requestAnimationFrame(raf);
 
-    // تهيئة ScrollTrigger
-    gsap.context(() => {
-      gsap.fromTo(
-        sectionRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
-      );
-    });
-
     return () => {
-      lenis.destroy(); // تنظيف Lenis عند التفكيك
+      lenis.destroy();
     };
   }, []);
 
   return (
     <div>
-      <Section ref={sectionRef}>
-        <Title
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+      <div className="hamburger-menu">
+        <button
+          className="burger"
+          data-state={isMenuOpen ? "open" : "closed"}
+          onClick={toggleMenu}
         >
-          من أنا؟
-        </Title>
-        <Subtitle
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          أقدم حلولًا رقمية متكاملة لتطوير مواقع الويب وتطبيقات الجوال، مع
-          التركيز على السرعة، الأداء، وتجربة المستخدم.
-        </Subtitle>
-      </Section>
+          <span className="block w-6 h-1 bg-white mb-1"></span>
+          <span className="block w-6 h-1 bg-white mb-1"></span>
+          <span className="block w-6 h-1 bg-white"></span>
+        </button>
+      </div>
+
+      <nav
+        data-state={isMenuOpen ? "open" : "closed"}
+        className={`transition-all ${isMenuOpen ? "block" : "hidden"}`}
+      >
+        <ul>
+          <li>
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">Services</a>
+          </li>
+          <li>
+            <a href="#">About</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
+      </nav>
+
+      <main className="bg-black text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="row">
+            <div className="col-md-6">
+              <motion.svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 800 600"
+                className="w-full h-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 2 }}
+              >
+                <g>
+                  <defs>
+                    <clipPath id="GlassClip">
+                      <path d="M380.857,346.164c-1.247,4.651-4.668,8.421-9.196,10.06c-9.332,3.377-26.2,7.817-42.301,3.5s-28.485-16.599-34.877-24.192c-3.101-3.684-4.177-8.66-2.93-13.311l7.453-27.798c0.756-2.82,3.181-4.868,6.088-5.13c6.755-0.61,20.546-0.608,41.785,5.087s33.181,12.591,38.725,16.498c2.387,1.682,3.461,4.668,2.705,7.488L380.857,346.164z" />
+                    </clipPath>
+                    <clipPath id="cordClip">
+                      <rect width="800" height="600" />
+                    </clipPath>
+                  </defs>
+                  {/* المحتوى الخاص بـ SVG */}
+                </g>
+              </motion.svg>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
 
-export default About;
+export default HomePage;
